@@ -1,0 +1,338 @@
+{
+  "meta": {
+    "titleDefault": "Agri Explorer — Khám phá thế giới nông nghiệp",
+    "description": "Bộ sưu tập sống về cây trồng, động vật và những vùng đất nuôi dưỡng chúng — hơn 12.000 loài cây, 5.000 loài động vật được phân loại theo môi trường sống."
+  },
+  "skipToContent": "Bỏ qua, đến nội dung chính",
+  "nav": {
+    "brand": "Agri Explorer",
+    "plants": "Cây trồng",
+    "animals": "Động vật",
+    "compare": "So sánh",
+    "map": "Bản đồ",
+    "quiz": "Trắc nghiệm",
+    "media": "Media",
+    "knowledge": "Kiến thức",
+    "calendar": "Lịch mùa vụ",
+    "collection": "Bộ sưu tập",
+    "search": "Tìm kiếm",
+    "openMenu": "Mở menu"
+  },
+  "footer": {
+    "tagline": "Bộ sưu tập sống về cây trồng, động vật và những vùng đất nuôi dưỡng chúng.",
+    "exploreTitle": "Khám phá",
+    "biomeTitle": "Môi trường sống",
+    "copyright": "Agri Explorer. Dữ liệu minh hoạ cho mục đích phát triển sản phẩm."
+  },
+  "hero": {
+    "eyebrow": "Khám phá thế giới",
+    "headline": "Nông nghiệp",
+    "subheadline": "Một bộ sưu tập sống về cây trồng, động vật và những vùng đất nuôi dưỡng chúng.",
+    "searchPlaceholder": "Tìm tên cây, động vật, vùng đất...",
+    "searchButton": "Tìm kiếm",
+    "scopePlants": "Cây trồng",
+    "scopeAnimals": "Động vật",
+    "scopeMedia": "Media",
+    "luckyButton": "Tôi đang may mắn",
+    "luckyButtonLoading": "Đang tìm...",
+    "luckyButtonAria": "Khám phá loài ngẫu nhiên"
+  },
+  "environment": {
+    "eyebrow": "Điểm khác biệt",
+    "title": "Khám phá theo môi trường sống",
+    "description": "Mỗi loài cây, loài vật đều gắn với một vùng đất riêng. Chọn một môi trường để xem những gì đang sinh sống tại đó.",
+    "backHome": "← Trang chủ",
+    "plantsHeading": "Cây trồng",
+    "animalsHeading": "Động vật",
+    "noData": "Chưa có dữ liệu."
+  },
+  "languageSwitcher": {
+    "label": "Ngôn ngữ",
+    "vi": "Tiếng Việt",
+    "en": "English"
+  },
+  "vietnameseOnlyNote": "Nội dung chi tiết dưới đây hiện chỉ có tiếng Việt.",
+  "animals": {
+    "title": "Động vật",
+    "description": "Danh sách các loài động vật gắn bó với đời sống nông nghiệp.",
+    "countLabel": "loài đang hiển thị."
+  },
+  "plants": {
+    "title": "Cây trồng",
+    "description": "Danh sách các loài cây trồng được phân loại theo nhóm và môi trường sống.",
+    "countLabel": "loài đang hiển thị."
+  },
+  "calendar": {
+    "title": "Lịch mùa vụ",
+    "description": "Lịch gieo trồng và thu hoạch theo vùng miền Bắc, Trung, Nam cho các cây trồng tiêu biểu.",
+    "subtitle": "Gieo trồng & thu hoạch theo vùng miền — dữ liệu mẫu tham khảo",
+    "filterAriaLabel": "Lọc vùng miền",
+    "plantColumn": "Cây trồng",
+    "harvestLabel": "Thu hoạch",
+    "plantingLabel": "Gieo trồng",
+    "noNote": "Chưa có ghi chú canh tác cho vụ này.",
+    "viewPlantDetail": "Xem chi tiết cây trồng →",
+    "legendHint": "Bấm vào một dòng để xem chi tiết vòng đời & ghi chú canh tác.",
+    "weatherAlertsTitle": "Cảnh báo thời tiết / mùa (dữ liệu mẫu)",
+    "noData": "Chưa có dữ liệu mùa vụ cho vùng này."
+  },
+  "knowledge": {
+    "title": "Kiến thức",
+    "description": "Bài viết chuyên sâu về canh tác, sinh thái, động vật và những câu chuyện thú vị từ thiên nhiên.",
+    "subtitle": "Bài viết chuyên sâu về canh tác, sinh thái và thiên nhiên",
+    "filterAriaLabel": "Lọc danh mục",
+    "filterAll": "Tất cả",
+    "featuredLabel": "Nổi bật",
+    "moreLabel": "Bài viết khác",
+    "emptyCategory": "Chưa có bài viết trong danh mục này.",
+    "backToAll": "Tất cả bài viết",
+    "readingTime": "phút đọc",
+    "relatedSpecies": "Loài đề cập trong bài",
+    "relatedArticles": "Bài viết liên quan",
+    "kindPlant": "Cây trồng",
+    "kindAnimal": "Động vật"
+  },
+  "media": {
+    "title": "Media",
+    "description": "Thư viện ảnh, video và infographic về cây trồng, động vật.",
+    "countLabel": "mục đang hiển thị (dữ liệu mẫu).",
+    "filterAll": "Tất cả",
+    "filterPhoto": "Ảnh",
+    "filterVideo": "Video",
+    "filterInfographic": "Infographic"
+  },
+  "quiz": {
+    "title": "Trắc nghiệm nông nghiệp",
+    "scientificNameOf": "Tên khoa học của",
+    "isWhat": "là gì?",
+    "nextQuestion": "Câu tiếp theo →",
+    "showResult": "Xem kết quả",
+    "scoreLabel": "Bạn đúng {score}/{total} câu",
+    "resultPerfect": "Xuất sắc! Bạn thông thạo tên khoa học rồi.",
+    "resultGood": "Khá tốt — chơi lại để ghi nhớ thêm nhé.",
+    "resultRetry": "Chơi lại để làm quen với tên khoa học các loài.",
+    "highScore": "Điểm cao nhất",
+    "totalPlayed": "Tổng lượt chơi",
+    "playAgain": "Chơi lại",
+    "viewCollection": "Xem bộ sưu tập",
+    "badges": {
+      "first_play": "🎯 Lần đầu chơi",
+      "perfect_score": "⭐ Điểm tuyệt đối",
+      "played_5_times": "🔥 5 lần chơi",
+      "played_10_times": "🏅 10 lần chơi"
+    }
+  },
+  "collection": {
+    "title": "Bộ sưu tập của tôi",
+    "tabFavourites": "Yêu thích",
+    "tabHistory": "Đã xem",
+    "tabSuggestions": "Gợi ý cho bạn",
+    "emptyFavouritesTitle": "Chưa có loài nào được lưu",
+    "emptyFavouritesDesc": "Nhấn vào biểu tượng trái tim trên trang chi tiết để lưu loài yêu thích.",
+    "emptyHistoryTitle": "Chưa có lịch sử xem",
+    "emptyHistoryDesc": "Lịch sử sẽ được ghi lại khi bạn xem trang chi tiết của bất kỳ loài nào.",
+    "emptySuggestionsTitle": "Chưa đủ dữ liệu để gợi ý",
+    "emptySuggestionsDesc": "Hãy xem thêm một vài loài để chúng tôi hiểu sở thích của bạn.",
+    "exploreNow": "Khám phá ngay",
+    "savedAgo": "Đã lưu",
+    "viewedAgo": "Đã xem",
+    "badges": {
+      "first_play": "🎯 Lần đầu chơi",
+      "perfect_score": "⭐ Điểm tuyệt đối",
+      "played_5_times": "🔥 5 lần chơi",
+      "played_10_times": "🏅 10 lần chơi"
+    },
+    "timeAgo": {
+      "justNow": "vừa xong",
+      "minutesAgo": "phút trước",
+      "hoursAgo": "giờ trước",
+      "daysAgo": "ngày trước"
+    }
+  },
+  "compare": {
+    "title": "So sánh loài",
+    "subtitle": "Chọn 2 loài bất kỳ — cây với cây, con vật với con vật, hoặc cả cây và con vật — để xem các điểm khác biệt cạnh nhau.",
+    "groupPlants": "Cây trồng",
+    "groupAnimals": "Động vật",
+    "pickerFirst": "Loài thứ nhất",
+    "pickerSecond": "Loài thứ hai",
+    "viewDetail": "Xem chi tiết"
+  },
+  "search": {
+    "title": "Tìm kiếm",
+    "placeholder": "Tìm tên cây, động vật, môi trường sống...",
+    "ariaLabel": "Từ khoá tìm kiếm",
+    "ariaClear": "Xoá từ khoá",
+    "ariaFilter": "Lọc theo loại",
+    "tabAll": "Tất cả",
+    "tabPlants": "Cây trồng",
+    "tabAnimals": "Động vật",
+    "tabArticles": "Bài viết",
+    "tabMedia": "Media",
+    "statusResults": "{count} kết quả cho",
+    "statusNoResults": "Không tìm thấy kết quả cho",
+    "statusNoResultsHint": "— thử từ khoá khác hoặc nhấn \"Tôi đang may mắn\".",
+    "statusEmpty": "Nhập từ khoá để tìm kiếm toàn bộ cây trồng, động vật và media.",
+    "moreResults": "Thêm {count} kết quả khác bên dưới ↓",
+    "headingPlants": "Cây trồng",
+    "headingAnimals": "Động vật",
+    "headingArticles": "Bài viết",
+    "headingMedia": "Media",
+    "emptyTitle": "Không có kết quả",
+    "emptyHint": "Thử tìm \"sầu riêng\", \"voi\", \"tropical\"... hoặc để chúng tôi chọn ngẫu nhiên cho bạn.",
+    "suggestionsLabel": "Gợi ý tìm kiếm",
+    "tagPlant": "Cây",
+    "tagAnimal": "Động vật",
+    "tagMedia": "Media",
+    "suggestions": [
+      "sầu riêng",
+      "voi",
+      "nhiệt đới",
+      "Robusta",
+      "wetland",
+      "sen"
+    ]
+  },
+  "map": {
+    "title": "Bản đồ toàn cục",
+    "subtitle": "Mỗi điểm trên bản đồ là quốc gia/khu vực gắn liền với một loài cây hoặc động vật trong bộ sưu tập. Lọc theo môi trường sống, di chuột vào danh sách để định vị trên bản đồ.",
+    "filterAll": "Tất cả"
+  },
+  "common": {
+    "all": "Tất cả",
+    "clearFilters": "Xoá lọc",
+    "resultsCount": "kết quả",
+    "close": "Đóng"
+  },
+  "plantsExplorer": {
+    "categoryHeading": "Loại cây",
+    "biomeHeading": "Môi trường sống",
+    "searchPlaceholder": "Tìm theo tên cây...",
+    "noResults": "Không tìm thấy loài cây phù hợp với bộ lọc hiện tại.",
+    "groups": {
+      "fruit": "Cây ăn quả",
+      "vegetable": "Rau màu",
+      "herbal": "Dược liệu",
+      "industrial": "Công nghiệp"
+    }
+  },
+  "animalsExplorer": {
+    "biomeHeading": "Môi trường sống",
+    "searchPlaceholder": "Tìm theo tên loài...",
+    "noResults": "Không tìm thấy loài phù hợp với bộ lọc hiện tại."
+  },
+  "categorySection": {
+    "title": "Danh mục",
+    "plantsDesc": "12.000+ loài, từ cây lương thực đến dược liệu.",
+    "animalsDesc": "5.000+ loài gắn bó với đời sống nông nghiệp.",
+    "mediaDesc": "Ảnh, video và infographic trực quan.",
+    "knowledgeDesc": "Bài viết chuyên sâu về canh tác và sinh thái."
+  },
+  "heroVisual": {
+    "slideAlt1": "Đàn voi châu Á băng qua sông",
+    "slideAlt2": "Sầu riêng chín tách múi",
+    "slideAlt3": "Voi mẹ và voi con trên đồng cỏ",
+    "slideAlt4": "Lớp vỏ gai đặc trưng của sầu riêng"
+  },
+  "heroStats": {
+    "plants": "Loài cây",
+    "animals": "Loài động vật",
+    "images": "Hình ảnh",
+    "videos": "Video"
+  },
+  "mediaSection": {
+    "title": "Media nổi bật",
+    "viewAll": "Xem tất cả"
+  },
+  "featuredSection": {
+    "title": "Khám phá hôm nay",
+    "swipeHint": "Vuốt hoặc kéo để xem thêm"
+  },
+  "favouriteButton": {
+    "remove": "Bỏ yêu thích",
+    "add": "Lưu",
+    "addSuffix": "vào bộ sưu tập"
+  },
+  "audioPronounce": {
+    "listenLabel": "Nghe phát âm tên khoa học",
+    "ariaPrefix": "Phát âm"
+  },
+  "worldMap": {
+    "ariaLabel": "Bản đồ thế giới",
+    "globeAriaLabel": "Quả địa cầu 3D xoay được",
+    "dragHint": "Kéo để xoay • Cuộn để thu phóng"
+  },
+  "plantDetail": {
+    "overview": "Tổng quan",
+    "classification": "Phân loại khoa học",
+    "kingdom": "Giới",
+    "order": "Bộ",
+    "family": "Họ",
+    "genus": "Chi",
+    "characteristics": "Đặc điểm hình thái",
+    "habitatTitle": "Môi trường sống",
+    "climate": "Khí hậu",
+    "terrain": "Địa hình / đất",
+    "distribution": "Phân bố",
+    "temperature": "Nhiệt độ",
+    "distributionMapTitle": "Bản đồ phân bố",
+    "careTitle": "Điều kiện chăm bón",
+    "watering": "Tưới nước",
+    "light": "Ánh sáng",
+    "soil": "Đất trồng",
+    "fertilizing": "Bón phân",
+    "pests": "Sâu bệnh thường gặp",
+    "growthStagesTitle": "Vòng đời sinh trưởng",
+    "galleryTitle": "Hình ảnh & video",
+    "usesTitle": "Công dụng",
+    "funFactsTitle": "Bạn có biết?",
+    "emptyHabitatTitle": "Điều kiện sinh trưởng",
+    "emptyDesc": "Dữ liệu chi tiết cho loài này đang được biên soạn, sẽ sớm có đầy đủ thông tin, ảnh và video.",
+    "emptyTimelineTitle": "Timeline phát triển",
+    "emptyTimelinePrefix": "Xem ví dụ đầy đủ tại trang",
+    "relatedTitle": "Có thể bạn quan tâm",
+    "relatedSubtitle": "— cùng nhóm hoặc môi trường sống",
+    "relatedReasonSameGroup": "Cùng nhóm cây",
+    "relatedReasonSameBiome": "Cùng môi trường",
+    "relatedReasonGeneric": "Liên quan"
+  },
+  "animalDetail": {
+    "overview": "Tổng quan",
+    "classification": "Phân loại khoa học",
+    "kingdom": "Giới",
+    "order": "Bộ",
+    "family": "Họ",
+    "genus": "Chi",
+    "characteristics": "Đặc điểm hình thái",
+    "habitatTitle": "Môi trường sống",
+    "climate": "Khí hậu",
+    "terrain": "Địa hình",
+    "distribution": "Phân bố",
+    "temperature": "Nhiệt độ",
+    "distributionMapTitle": "Bản đồ phân bố",
+    "behaviorTitle": "Tập tính",
+    "diet": "Chế độ ăn",
+    "socialStructure": "Cấu trúc xã hội",
+    "activity": "Hoạt động",
+    "reproduction": "Sinh sản",
+    "lifespan": "Tuổi thọ",
+    "lifecycleTitle": "Vòng đời",
+    "galleryTitle": "Hình ảnh & video",
+    "humanConnectionTitle": "Liên quan đến con người",
+    "conservationTitle": "Tình trạng bảo tồn",
+    "funFactsTitle": "Bạn có biết?",
+    "emptyHabitatTitle": "Tập tính & môi trường sống",
+    "emptyDesc": "Dữ liệu chi tiết cho loài này đang được biên soạn, sẽ sớm có đầy đủ thông tin, ảnh và video.",
+    "emptyTimelineTitle": "Vòng đời",
+    "emptyTimelinePrefix": "Xem ví dụ đầy đủ tại trang",
+    "relatedTitle": "Có thể bạn quan tâm",
+    "relatedSubtitle": "— cùng môi trường hoặc chế độ ăn",
+    "relatedReasonSameBiome": "Cùng môi trường",
+    "relatedReasonDiet": "Chế độ ăn tương tự"
+  },
+  "articleRenderer": {
+    "tip": "Mẹo",
+    "warning": "Lưu ý",
+    "lifecycle": "Chu kỳ / Vòng đời"
+  }
+}
