@@ -74,11 +74,9 @@ export function buildCoastlineSegments(
  * Chiếu kinh độ/vĩ độ → vị trí 3D trên mặt cầu bán kính `radius`.
  *
  * Công thức khớp đúng UV mapping mặc định của `THREE.SphereGeometry`
- * (đã verify trực tiếp với source code three@0.184) VÀ đã verify thực
- * nghiệm bằng marker tại London/India/Tokyo/New York (dựng scene Three.js
- * thật, chụp ảnh so sánh — không chỉ suy diễn trên giấy): nhìn vào quả địa
- * cầu từ ngoài với hướng Bắc lên trên, Đông nằm bên phải, Tây nằm bên trái —
- * đúng như bản đồ thường thấy. Dùng `lon+180`, KHÔNG phải `180-lon`.
+ * (đã verify trực tiếp với source code three@0.184 — xem PLAN.md) để
+ * texture equirectangular vẽ ở `world-texture.ts` nằm đúng vị trí thực tế,
+ * không bị lệch/ngược so với marker.
  */
 export function lonLatToVector3(lat: number, lon: number, radius: number): [number, number, number] {
   const phi = (90 - lat) * (Math.PI / 180);

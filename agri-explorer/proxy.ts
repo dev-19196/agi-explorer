@@ -33,6 +33,9 @@ function detectLocale(request: NextRequest): string {
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
+  // Admin dashboard là tool nội bộ, không cần locale routing (Mục 7).
+  if (pathname === "/admin" || pathname.startsWith("/admin/")) return;
+
   const hasLocalePrefix = LOCALES.some(
     (locale) => pathname === `/${locale}` || pathname.startsWith(`/${locale}/`),
   );

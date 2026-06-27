@@ -6,8 +6,18 @@ import type { NextConfig } from "next";
  *   không nhúng script bên thứ 3 nào ở giai đoạn này.
  * - Khi thêm analytics / CDN / font ngoài ở các sprint sau, bổ sung domain
  *   cụ thể vào đây — KHÔNG dùng "*" hoặc "unsafe-inline" cho script-src.
+ * - Mục 7 (Admin Dashboard): connect-src cần thêm origin của AgriExplorerApi
+ *   (NEXT_PUBLIC_API_URL) vì admin gọi fetch() trực tiếp từ browser sang đó
+ *   — "connect-src 'self'" mặc định sẽ chặn toàn bộ gọi API admin.
  */
 const isDev = process.env.NODE_ENV !== "production";
+const apiOrigin = (() => {
+  try {
+    return new URL(process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:5000").origin;
+  } catch {
+    return "";
+  }
+})();
 
 const cspDirectives = [
   `default-src 'self'`,
@@ -16,7 +26,7 @@ const cspDirectives = [
   `img-src 'self' data: blob: https://images.unsplash.com`,
   `font-src 'self' data:`,
   `media-src 'self'`,
-  `connect-src 'self'`,
+  `connect-src 'self'${apiOrigin ? ` ${apiOrigin}` : ""}`,
   `frame-ancestors 'none'`,
   `base-uri 'self'`,
   `form-action 'self'`,

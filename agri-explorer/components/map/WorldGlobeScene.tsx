@@ -49,41 +49,6 @@ function markerKey(m: MapMarker): string {
   return m.label;
 }
 
-/**
- * Tính quaternion xoay quả địa cầu để hướng `targetLocal` (1 điểm trên mặt
- * cầu, toạ độ cục bộ — VD centroid các marker) ra chính giữa, đối diện
- * camera — NHƯNG vẫn giữ hướng Bắc luôn hướng lên trên màn hình.
- *
- * Lưu ý quan trọng: `THREE.Quaternion.setFromUnitVectors(from, to)` chỉ tìm
- * 1 phép xoay đưa `from` tới `to`, KHÔNG kiểm soát độ "roll" (xoay quanh
- * chính trục nhìn) — với 1 số hướng centroid cụ thể, roll này có thể lên tới
- * hơn 100°, khiến cả vùng nhìn bị vẹo/lệch trục Bắc, dễ nhận lầm thành bị
- * "ngược" địa lý dù đường bờ biển vẽ đúng. Hàm này dựng trực tiếp 1 hệ toạ
- * độ trực chuẩn (right/up/target) để loại bỏ hoàn toàn phần roll dư đó —
- * đã verify: hướng Bắc sau khi xoay luôn nằm đúng mặt phẳng đứng màn hình
- * (không lệch trái/phải) bất kể centroid ở đâu.
- */
-function computeNorthUpOrientation(targetLocal: THREE.Vector3): THREE.Quaternion {
-  const target = targetLocal.clone().normalize();
-  const worldUpRef = new THREE.Vector3(0, 1, 0);
-  const right = new THREE.Vector3().crossVectors(worldUpRef, target);
-  if (right.lengthSq() < 1e-6) {
-    // target gần trùng cực Bắc/Nam (worldUpRef song song target) — chọn tuỳ
-    // ý 1 hướng "right" khác vuông góc với target để tránh chia cho ~0.
-    right.set(1, 0, 0).cross(target);
-    if (right.lengthSq() < 1e-6) right.set(0, 0, 1).cross(target);
-  }
-  right.normalize();
-  const up = new THREE.Vector3().crossVectors(target, right).normalize();
-  const basis = new THREE.Matrix4().set(
-    right.x, right.y, right.z, 0,
-    up.x, up.y, up.z, 0,
-    target.x, target.y, target.z, 0,
-    0, 0, 0, 1,
-  );
-  return new THREE.Quaternion().setFromRotationMatrix(basis);
-}
-
 interface WorldGlobeSceneProps {
   markers: MapMarker[];
   className?: string;
@@ -214,7 +179,8 @@ export function WorldGlobeScene({ markers, className, onUnsupported }: WorldGlob
         centroid.add(new THREE.Vector3(x, y, z));
       }
       if (centroid.lengthSq() > 1e-6) {
-        globeGroup.quaternion.copy(computeNorthUpOrientation(centroid));
+        centroid.normalize();
+        globeGroup.quaternion.setFromUnitVectors(centroid, new THREE.Vector3(0, 0, 1));
       }
     }
     scene.add(globeGroup);

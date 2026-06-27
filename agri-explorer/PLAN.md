@@ -358,10 +358,6 @@ Yêu cầu: bản đồ phân bố loài (SVG vẽ tay, lục địa chỉ là �
 - `container` bị TypeScript báo `possibly null` trong các closure lồng (`resize`, `animate`) dù đã `if (!container) return` ngay trước — TS không tự suy luận narrowing xuyên qua khai báo `function` lồng bên trong (đã verify bằng test cô lập riêng). Sửa bằng cách gán lại biến sau khi narrow.
 - `eslint-plugin-react-hooks` v7 (rule mới dạng "React Compiler"): cấm gán `ref.current = ...` trực tiếp lúc render (`react-hooks/refs`) và cấm gọi `setState` đồng bộ trong effect (`react-hooks/set-state-in-effect`). Phát hiện ngay từ bản build đầu — không phải lỗi cũ, mà do code mới viết theo pattern cũ chưa hợp với rule mới. Sửa bằng effect riêng để đồng bộ ref, và `useSyncExternalStore` thay cho `useLayoutEffect`+`setState` khi đọc WebGL support.
 - `THREE.Clock` đã deprecated ở three@0.184 → đổi sang `THREE.Timer`.
-- **🔴 [Phát hiện sau khi đã giao bản đầu — do người dùng báo "quả địa cầu bị ngược", verify lại mới ra lỗi thật]** `globeGroup.quaternion.setFromUnitVectors(centroid, (0,0,1))` đưa đúng centroid ra giữa khung hình, NHƯNG không kiểm soát "roll" (xoay quanh chính trục nhìn) — với centroid lệch xa khỏi xích đạo/kinh tuyến gốc (VD trang `/map` với 14 loài, centroid ngả về phía Việt Nam/Trung Quốc), roll đo được lên tới **126°**, khiến cả vùng nhìn bị vẹo trục Bắc, nhìn như "ngược" dù dữ liệu đường bờ biển hoàn toàn đúng. Phát hiện sai lầm ban đầu: lúc đầu tưởng là lỗi đông-tây (đã thử đảo `lon+180`→`180-lon`, verify lại bằng marker thật ở London/Tokyo/New York mới phát hiện bản gốc đông-tây ĐÚNG, đã revert) — lỗi thật nằm ở phần roll này, tìm ra bằng cách tái tạo y nguyên scene với dữ liệu 14 loài thật + gắn nhãn quốc gia lên từng marker để so khớp pixel-by-pixel với ảnh chụp người dùng gửi, rồi đo trực tiếp hướng "Bắc" sau khi xoay bằng vector toán học (không suy diễn). Sửa bằng `computeNorthUpOrientation()` — dựng hệ toạ độ trực chuẩn (right/up/target) thay cho `setFromUnitVectors`, đảm bảo roll = 0° với mọi centroid.
-
-##### Bài học verify (ghi lại để tránh lặp lại)
-Test bằng 1 species ít điểm, gần nhau, gần xích đạo (sầu riêng: VN/Indonesia/Malaysia/Thái Lan) KHÔNG phát hiện được lỗi roll — vì centroid của nhóm điểm gần nhau, ít lệch xích đạo thì roll nhỏ, không đáng kể. Lỗi chỉ rõ ràng ở trang `/map` (14 loài, trải nhiều lục địa, centroid lệch hẳn về 1 phía). Rút ra: khi verify tính năng liên quan toạ độ/xoay 3D, cần test với cả trường hợp "nhiều điểm trải rộng" chứ không chỉ trường hợp đơn giản, và khi nghi ngờ hướng/chiều, ưu tiên đo bằng số (dot/cross product, hoặc dựng lại scene thật để so khớp) thay vì chỉ nhìn ảnh suy diễn — lần đầu chính em cũng suy diễn sai (kết luận nhầm là lỗi đông-tây) trước khi đo lại bằng marker thật.
 - **Quan trọng — phát hiện ngoài phạm vi mục này:** test bằng `next start` (production) + Chromium thật (Playwright) phát hiện **toàn bộ hydration React bị CSP chặn ở production**, không riêng tính năng này. Xem mục mới trong "Vấn đề kỹ thuật cần theo dõi" bên dưới — đây là lý do trước đây không phát hiện ra: verify trước giờ chỉ chạy `next dev` (có `unsafe-inline`) và `curl` (không chạy JS).
 
 ##### Đã verify
@@ -384,3 +380,159 @@ Test bằng 1 species ít điểm, gần nhau, gần xích đạo (sầu riêng:
 - Quiz page dùng client-side random — nếu nhiều câu hỏi hơn cần cân nhắc seed từ server
 - Search INDEX build tại module load — ổn với data nhỏ, cần cache hoặc worker với data lớn
 - `npm run lint` hiện báo 6 lỗi/18 warning **không liên quan tới Mục 6b/6c** — đều ở code Mục 1–3 (ví dụ `react-hooks/set-state-in-effect` trong `useLocalStorage.ts`, `useUserActivity.tsx`, `app/quiz/page.tsx`, `app/search/page.tsx`; `Math.random` trong `app/collection/page.tsx`; vài lỗi nhỏ khác về `<img>`/`any`). Không sửa trong phạm vi 6b/6c để tránh lan phạm vi — nên dọn ở 1 sprint riêng.
+
+---
+
+## Mục 7 — Admin Dashboard
+
+**Trạng thái: 🟡 Đang làm — phần CRUD core đã xong, còn việc cần làm ở dưới.**
+
+### Bối cảnh
+
+Khác với Mục 6b (build-time sync Supabase → `lib/data/*.ts` tĩnh), backend
+thật của dự án (`AgriExplorerApi`, repo riêng — .NET 8 + EF Core + MSSQL) đã
+có sẵn từ trước, hiện đang phục vụ trang khai thác (FE chưa nối vào, vẫn
+đang dùng `lib/data/*.ts` tĩnh — việc nối FE khai thác sang API thật **chưa
+nằm trong phạm vi Mục 7**, chỉ làm phần admin).
+
+BE đã có sẵn: JWT auth (`/api/auth/login`, role `admin`), GET (list + theo
+khoá) và POST upsert (insert/update theo khoá chính, không có PUT riêng) cho
+6 entity: Plants, Animals, Articles, Media, SeasonalEvents, WeatherAlerts.
+**Còn thiếu DELETE** — đã tự bổ sung `[HttpDelete]` cho cả 6 controller (giữ
+nguyên convention `[Authorize(Roles = "admin")]`, trả `204 NoContent`) để
+admin có CRUD đầy đủ.
+
+### Quyết định kiến trúc
+
+1. **`/admin` đứng ngoài `[lang]`, không qua i18n routing.** Đây là tool nội
+   bộ, không cần `/vi`/`/en`. `proxy.ts` (Mục 6c) đã thêm early-return cho
+   path bắt đầu bằng `/admin`. Layout riêng `app/admin/layout.tsx` tự khai
+   `<html>/<body>` (cùng pattern với `app/[lang]/layout.tsx` — dự án không
+   có `app/layout.tsx` chung, mỗi subtree tự là "root layout" của nó).
+2. **Auth: JWT lưu `localStorage`, không cookie/session phía Next.js.**
+   Admin gọi trực tiếp từ browser sang `AgriExplorerApi` (CORS đã mở ở
+   `Program.cs`), không qua Next.js API route trung gian — đơn giản nhất vì
+   không cần giữ secret nào ở phía Next (khác với `lib/db/*` dùng
+   service-role, phải giữ server-side). Đánh đổi: token có thể bị đọc qua
+   XSS nếu trang có lỗ hổng — chấp nhận được cho 1 admin tool nội bộ, ít
+   người dùng, không phải hướng đi đúng nếu sau này mở rộng nhiều role/user.
+3. **`lib/api/*` tách hoàn toàn khỏi `lib/db/*`.** `lib/db/*` (Mục 6b) là
+   service-role, chỉ an toàn trong script/CI, không export ra client. `lib/api/*`
+   là client-side, dùng JWT của user đang đăng nhập — 2 cơ chế auth khác hẳn,
+   không tái sử dụng chung 1 module để tránh nhầm lẫn quyền hạn.
+4. **1 component CRUD chung (`ResourceManager`), không viết riêng 6 trang.**
+   6 entity đều theo đúng 1 khuôn (list + form modal create/update + delete),
+   chỉ khác field. Khai báo qua `FieldConfig[]` (giống tinh thần
+   "config-driven" đã dùng ở Mục 6c cho dictionary) — 6 trang admin chỉ còn
+   là file khai báo field + map vào component chung. Trade-off: field phức
+   tạp (nested object) phải đi qua loại `"json"` (xem điểm 5) — không có
+   form lồng nhau tự sinh theo schema.
+5. **Field `detail`/`sections` (JSON lồng sâu) dùng textarea JSON thô, không
+   build form lồng theo từng field con.** `PlantDetail`/`AnimalDetail`
+   (`types/content.ts`) có quá nhiều field lồng (classification, care,
+   growthStages, gallery...) để form hoá tự động trong phạm vi sprint này —
+   build 1 schema-form generator riêng cho việc này sẽ là phạm vi 1 mục
+   riêng. Hiện tại: dán JSON tay, validate bằng `JSON.parse` lúc submit, báo
+   lỗi cú pháp rõ ràng nếu sai — đủ dùng cho admin kỹ thuật (bạn), chưa thân
+   thiện cho non-technical editor.
+
+### Files đã tạo
+
+| File | Vai trò |
+|---|---|
+| `lib/api/client.ts` | Fetch wrapper: tự đính JWT (`Authorization: Bearer`), tự throw `ApiError` khi response lỗi, tự xoá token + báo hết hạn khi gặp 401 |
+| `lib/api/auth.ts` | `login()`/`logout()`/`getCurrentUser()`/`isAuthenticated()` — lưu token + `{username, role}` vào `localStorage` |
+| `lib/api/types.ts` | Type khớp 1:1 DTO bên BE (camelCase theo `Program.cs` config) + hằng số option cho mọi enum (Biome, PlantCategory, Region...) |
+| `lib/api/admin-resources.ts` | Factory `createCrud<T>(path)` sinh `list/get/upsert/remove` — export `plantsApi`, `animalsApi`, `articlesApi`, `mediaApi`, `seasonalEventsApi`, `weatherAlertsApi` |
+| `components/admin/AdminShell.tsx` | Sidebar nav + guard auth (redirect `/admin/login` nếu chưa đăng nhập) + nút đăng xuất |
+| `components/admin/ResourceManager.tsx` | Component CRUD generic: bảng list, modal form (text/textarea/number/select/tags/months/json/datetime), xác nhận trước khi xoá |
+| `app/admin/layout.tsx` | Root layout riêng cho `/admin`, không qua `[lang]` |
+| `app/admin/login/page.tsx` | Form đăng nhập, gọi `/api/auth/login` |
+| `app/admin/page.tsx` | Redirect `/admin` → `/admin/plants` |
+| `app/admin/plants/page.tsx`, `animals/`, `articles/`, `media/`, `seasonal-events/`, `weather-alerts/page.tsx` | Khai báo `FieldConfig[]` cho từng entity, dùng chung `ResourceManager` |
+| `.env.example` | Thêm `NEXT_PUBLIC_API_URL` (mặc định `http://localhost:5000`) |
+| `proxy.ts` | Thêm early-return cho `/admin` (không redirect locale) |
+| BE `Controllers/PlantsAndAnimalsController.cs`, `ArticlesAndMediaController.cs`, `SeasonalAndWeatherController.cs` | Bổ sung `[HttpDelete]` cho cả 6 entity |
+
+### Lỗi đã phát hiện và sửa lúc verify
+
+- Generic `ResourceManager<T extends Record<string, unknown>>` ban đầu làm
+  `tsc` lỗi ở mọi trang gọi (`PlantDto`, `AnimalDto`... không có index
+  signature nên không khớp `Record<string, unknown>`) — đổi constraint
+  thành `T extends object`, đủ lỏng để nhận mọi DTO cụ thể mà vẫn giữ được
+  `keyof T` an toàn ở field access.
+- `react-hooks/set-state-in-effect` (rule mới, đã gặp ở Mục 6d) bắt lỗi ở
+  cả `AdminShell` (state `ready` set trong effect) và `ResourceManager`
+  (gọi `refresh()` — có set state bên trong — trực tiếp trong effect). Sửa:
+  bỏ hẳn state `ready` ở `AdminShell` (tính `isAuthenticated()` ngay lúc
+  render thay vì cache vào state); ở `ResourceManager` viết IIFE async có
+  cờ `cancelled` ngay trong effect thay vì gọi ra hàm `refresh` dùng chung.
+- Đã verify: `tsc --noEmit` sạch, `eslint app/admin components/admin lib/api`
+  sạch (0 lỗi/warning mới), `next build` thành công — toàn bộ 7 route admin
+  build dạng Static (`○`), không phá vỡ số trang SSG hiện có của `[lang]`.
+  Chưa verify được round-trip thật với DB (sandbox không có quyền truy cập
+  IP/host của `AgriExplorerApi` thật — tương tự hạn chế đã ghi ở Mục 6b với
+  Supabase).
+
+### Còn lại — cần bạn tự làm
+
+1. Trỏ `NEXT_PUBLIC_API_URL` trong `.env.local` về URL thật của
+   `AgriExplorerApi` (kèm CORS `AllowedOrigins` ở `appsettings.json` BE phải
+   có domain Next.js chạy admin).
+2. Build + chạy lại `AgriExplorerApi` với 6 endpoint `DELETE` mới (đã sửa
+   source, cần `dotnet build`/deploy lại — sandbox này không có quyền chạy
+   .NET).
+3. Đăng nhập thử với user `SeedAdmin` (mặc định `admin`/`ChangeMe123!` theo
+   `Program.cs`, nên đổi qua `appsettings`/biến môi trường trước khi deploy
+   thật) → thử tạo/sửa/xoá 1 record mỗi entity → xác nhận khớp với
+   `GetAll`/`GetBySlug` phía trang khai thác.
+4. Quyết định hướng cho field JSON thô (`detail`, `sections`) — giữ textarea
+   tay (đủ dùng cho 1 admin kỹ thuật) hay đầu tư form lồng theo schema (cần
+   1 sprint riêng, xem điểm 5 ở "Quyết định kiến trúc").
+5. Phân quyền: hiện `Role` mới có `"admin"`; nếu cần thêm `"editor"` (xem
+   comment sẵn trong `Entities/AppUser.cs`) — Mục 7 chưa làm UI quản lý user,
+   chỉ có 1 user seed.
+
+### Thiết kế lại UI (sau phản hồi "xấu")
+
+Lần đầu chỉ đổi màu từ token đúng (canvas/ink/pine/honey) lên 1 layout
+dashboard generic — đúng màu nhưng sai *vocabulary*, nên vẫn đọc như SaaS
+admin template, lệch hẳn cảm giác "tiêu bản herbarium" của trang khai thác
+(xem `components/cards/SpecimenPlate.tsx`, `PlantCard.tsx`: dot-grid nền,
+viền nét đứt, eyebrow honey-dark tracking rộng, tên loài in nghiêng
+font-display). Đã làm lại theo đúng ngôn ngữ đó:
+
+- `components/admin/SpecimenChrome.tsx` — tái hiện đúng motif dot-grid +
+  viền nét đứt từ `SpecimenPlate` làm "chữ ký" thị giác duy nhất của admin
+  (`SpecimenBadgeIcon`), dùng nhất quán ở sidebar/login/modal. `Eyebrow`
+  dùng đúng pattern `text-xs font-semibold uppercase tracking-[0.25em]
+  text-honey-dark` đã thấy ở `EnvironmentSection`/`Hero`/`ArticleRenderer`.
+- Bảng list: badge biome dùng đúng `Badge variant="biome"` + màu theo
+  `BIOME_COLOR_VAR`/`BIOME_LABEL_VI` (mới thêm vào `lib/api/types.ts`),
+  cột đầu tiên font-display, divider giữa dòng dùng nét đứt, header cột lấy
+  `label` tiếng Việt từ `FieldConfig` thay vì in thẳng tên property.
+- Mỗi trang entity giờ có `eyebrow`/`description`/`noun` riêng — copy theo
+  giọng văn của site (mô tả thật sự nói data này dùng ở đâu trên trang
+  khai thác), không còn placeholder kiểu "Quản lý X".
+
+**Đã verify lại bằng ảnh chụp thật (Playwright + Chromium), không chỉ đọc
+code đoán** — chạy `next dev`/`next start` trong sandbox, chụp `/admin/login`
+và `/admin/plants` (mock response `/api/plants` qua `page.route` để thấy
+bảng có dữ liệu + badge biome, mở thử modal sửa). Quá trình verify này lộ
+ra 2 bug thật, đã sửa luôn:
+
+1. **CSP `connect-src 'self'` chặn toàn bộ fetch sang BE** — `next.config.ts`
+   cấu hình CSP chỉ cho phép gọi cùng origin, nên mọi request admin sang
+   `AgriExplorerApi` (origin khác) sẽ bị browser tự chặn ở mọi môi trường,
+   không riêng sandbox. Đã sửa: `connect-src` giờ đọc thêm origin từ
+   `NEXT_PUBLIC_API_URL` lúc build.
+2. **Hydration mismatch ở `AdminShell`** — gọi `isAuthenticated()` (đọc
+   `localStorage`) ngay trong thân render, khác kết quả giữa SSR (luôn
+   "chưa đăng nhập") và client. Đã sửa theo pattern `mounted` chuẩn (chỉ
+   tính sau khi `useEffect` xác nhận đã ở client), tránh nhấp nháy/cảnh báo
+   console mỗi lần vào `/admin`.
+
+Việc cần làm còn lại không đổi so với mục trên — riêng điểm 1 (test round-trip
+thật với DB) giờ nên test luôn cả việc CORS + CSP có khớp domain thật khi
+deploy (không chỉ JWT/role).
+
