@@ -1,0 +1,51 @@
+# AgriExplorerApi (.NET Backend)
+AgriExplorerApi/bin/
+AgriExplorerApi/obj/
+AgriExplorerApi/*.user
+AgriExplorerApi/*.csproj.user
+
+# Node modules (Frontend)
+agri-explorer/node_modules/
+
+# Next.js build output
+agri-explorer/.next/
+agri-explorer/out/
+
+# Production
+agri-explorer/build/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.log
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Editor directories and files
+.vscode/
+.idea/
+.DS_Store
+
+# TypeScript
+*.tsbuildinfo
+
+# Test coverage
+agri-explorer/coverage/
+
+# Misc
+agri-explorer/dist/
+
+# Database files
+*.db
+*.sqlite
+
+# IDEs
+.vs/
+.vscode/
+*.swp
+*.swo
